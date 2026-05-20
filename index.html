@@ -177,6 +177,12 @@
         <div id="chart-goals"></div>
       </div>
     </div>
+
+    <div class="chart-card">
+      <p class="chart-title">More teams, more matches</p>
+      <p class="chart-note">Total matches played per tournament, 1930–2026</p>
+      <div id="chart-matches"></div>
+    </div>
   </div>
 </section>
 
@@ -198,6 +204,12 @@
       <p class="chart-note">World Cup titles won, by nation</p>
       <div id="chart-winners"></div>
     </div>
+
+    <div class="chart-card">
+      <p class="chart-title">Where the tournament has been held</p>
+      <p class="chart-note">Number of times each confederation has hosted</p>
+      <div id="chart-hosts"></div>
+    </div>
   </div>
 </section>
 
@@ -213,6 +225,12 @@
       <p class="chart-note">Career World Cup goals (placeholder values)</p>
       <div id="chart-scorers"></div>
     </div>
+
+    <div class="chart-card">
+      <p class="chart-title">Nations that produce the best players</p>
+      <p class="chart-note">Golden Ball (best player) awards won, by country</p>
+      <div id="chart-goldenball"></div>
+    </div>
   </div>
 </section>
 
@@ -227,6 +245,12 @@
       <p class="chart-title">The Socceroos' goal record</p>
       <p class="chart-note">Goals scored by Australia per World Cup (placeholder values)</p>
       <div id="chart-australia"></div>
+    </div>
+
+    <div class="chart-card">
+      <p class="chart-title">The Matildas' rise</p>
+      <p class="chart-note">Australia's Women's World Cup finishing position by tournament</p>
+      <div id="chart-matildas"></div>
     </div>
   </div>
 </section>
@@ -408,13 +432,90 @@ const slots2026Spec = {
 };
 
 /* ---------- Render all ---------- */
+
+/* 3b. Matches per tournament */
+const matchesSpec = {
+  $schema:"https://vega.github.io/schema/vega-lite/v5.json",
+  width:"container", height:240, config,
+  data:{values:[
+    {year:1930,m:18},{year:1934,m:17},{year:1938,m:18},{year:1950,m:22},
+    {year:1954,m:26},{year:1958,m:35},{year:1962,m:32},{year:1966,m:32},
+    {year:1970,m:32},{year:1974,m:38},{year:1978,m:38},{year:1982,m:52},
+    {year:1986,m:52},{year:1990,m:52},{year:1994,m:52},{year:1998,m:64},
+    {year:2002,m:64},{year:2006,m:64},{year:2010,m:64},{year:2014,m:64},
+    {year:2018,m:64},{year:2022,m:64},{year:2026,m:104}
+  ]},
+  mark:{type:"bar", color:NAVY, cornerRadiusEnd:2},
+  encoding:{
+    x:{field:"year", type:"ordinal", axis:{title:null, labelAngle:-45}},
+    y:{field:"m", type:"quantitative", title:"Matches"},
+    tooltip:[{field:"year",title:"Year"},{field:"m",title:"Matches"}]
+  }
+};
+
+/* 4c. Hosts by confederation */
+const hostsSpec = {
+  $schema:"https://vega.github.io/schema/vega-lite/v5.json",
+  width:"container", height:260, config,
+  data:{values:[
+    {conf:"UEFA (Europe)",hosted:11},{conf:"CONMEBOL (S. America)",hosted:5},
+    {conf:"CONCACAF (N. America)",hosted:5},{conf:"AFC (Asia)",hosted:2},
+    {conf:"CAF (Africa)",hosted:1}
+  ]},
+  mark:{type:"bar", color:PITCH, cornerRadiusEnd:3},
+  encoding:{
+    y:{field:"conf", type:"nominal", sort:"-x", title:null},
+    x:{field:"hosted", type:"quantitative", title:"Times hosted", axis:{tickMinStep:1}},
+    tooltip:[{field:"conf",title:"Confederation"},{field:"hosted",title:"Times hosted"}]
+  }
+};
+
+/* 5b. Golden Ball winners by country */
+const goldenballSpec = {
+  $schema:"https://vega.github.io/schema/vega-lite/v5.json",
+  width:"container", height:280, config,
+  data:{values:[
+    {country:"Brazil",awards:4},{country:"Argentina",awards:3},
+    {country:"Germany",awards:2},{country:"Italy",awards:2},
+    {country:"France",awards:1},{country:"Netherlands",awards:1},
+    {country:"Croatia",awards:1},{country:"Uruguay",awards:1}
+  ]},
+  mark:{type:"bar", color:GOLD, cornerRadiusEnd:3},
+  encoding:{
+    y:{field:"country", type:"nominal", sort:"-x", title:null},
+    x:{field:"awards", type:"quantitative", title:"Golden Ball awards", axis:{tickMinStep:1}},
+    tooltip:[{field:"country"},{field:"awards",title:"Golden Balls"}]
+  }
+};
+
+/* 6b. Matildas finishing position */
+const matildasSpec = {
+  $schema:"https://vega.github.io/schema/vega-lite/v5.json",
+  width:"container", height:260, config,
+  data:{values:[
+    {year:"1995",pos:9},{year:"1999",pos:12},{year:"2003",pos:11},
+    {year:"2007",pos:8},{year:"2011",pos:8},{year:"2015",pos:6},
+    {year:"2019",pos:11},{year:"2023",pos:4}
+  ]},
+  mark:{type:"line", color:PITCH, strokeWidth:2.5, point:{filled:true,color:PITCH}},
+  encoding:{
+    x:{field:"year", type:"ordinal", title:"Tournament"},
+    y:{field:"pos", type:"quantitative", title:"Finishing position", scale:{reverse:true}, axis:{tickMinStep:1}},
+    tooltip:[{field:"year",title:"Year"},{field:"pos",title:"Finish (place)"}]
+  }
+};
+
 const opts = {actions:false, renderer:"svg"};
 vegaEmbed("#chart-teams", teamsSpec, opts);
 vegaEmbed("#chart-goals", goalsSpec, opts);
+vegaEmbed("#chart-matches", matchesSpec, opts);
 vegaEmbed("#chart-map", mapSpec, opts);
 vegaEmbed("#chart-winners", winnersSpec, opts);
+vegaEmbed("#chart-hosts", hostsSpec, opts);
 vegaEmbed("#chart-scorers", scorersSpec, opts);
+vegaEmbed("#chart-goldenball", goldenballSpec, opts);
 vegaEmbed("#chart-australia", ausSpec, opts);
+vegaEmbed("#chart-matildas", matildasSpec, opts);
 vegaEmbed("#chart-2026", slots2026Spec, opts);
 </script>
 
