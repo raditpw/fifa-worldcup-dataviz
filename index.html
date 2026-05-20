@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The FIFA World Cup — 1930–2026</title>
+
+<!-- Vega-Lite libraries (loaded from CDN) -->
+<script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
+<script src="https://cdn.jsdelivr.net/npm/vega-lite@5"></script>
+<script src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
+
+<!-- Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Spectral:ital,wght@0,400;0,600;1,400&family=Archivo:wght@400;600;800&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --navy:#0b1f33;
+    --navy-2:#13314f;
+    --gold:#e8b13a;
+    --gold-soft:#f3d488;
+    --pitch:#2f8f5b;
+    --paper:#f7f4ec;
+    --ink:#10222f;
+    --muted:#5d6b75;
+  }
+
+  *{box-sizing:border-box;}
+
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:"Spectral", Georgia, serif;
+    line-height:1.65;
+    font-size:18px;
+  }
+
+  /* ---------- Layout ---------- */
+  .wrap{max-width:1080px;margin:0 auto;padding:0 28px;}
+
+  section{padding:80px 0;border-bottom:1px solid rgba(16,34,47,0.08);}
+
+  .section-label{
+    font-family:"Archivo", sans-serif;
+    font-weight:800;
+    letter-spacing:0.18em;
+    text-transform:uppercase;
+    font-size:13px;
+    color:var(--pitch);
+    margin-bottom:10px;
+  }
+
+  h1,h2,h3{font-family:"Anton", sans-serif;font-weight:400;letter-spacing:0.01em;line-height:1.02;}
+
+  h2{font-size:48px;margin:0 0 18px;color:var(--navy);text-transform:uppercase;}
+
+  p{max-width:64ch;}
+
+  .lead{font-size:21px;color:var(--muted);}
+
+  /* ---------- Hero ---------- */
+  .hero{
+    background:
+      radial-gradient(900px 500px at 80% -10%, rgba(232,177,58,0.25), transparent 60%),
+      linear-gradient(160deg, var(--navy), var(--navy-2));
+    color:var(--paper);
+    border-bottom:6px solid var(--gold);
+    padding:130px 0 110px;
+    position:relative;
+    overflow:hidden;
+  }
+  .hero::after{
+    /* faint pitch stripes */
+    content:"";position:absolute;inset:0;
+    background:repeating-linear-gradient(90deg, rgba(255,255,255,0.03) 0 60px, transparent 60px 120px);
+    pointer-events:none;
+  }
+  .hero .wrap{position:relative;z-index:2;}
+  .kicker{
+    font-family:"Archivo",sans-serif;font-weight:800;letter-spacing:0.32em;
+    text-transform:uppercase;font-size:14px;color:var(--gold-soft);margin-bottom:18px;
+  }
+  .hero h1{
+    font-size:clamp(60px, 11vw, 132px);
+    margin:0;
+    color:#fff;
+    text-shadow:0 4px 30px rgba(0,0,0,0.35);
+  }
+  .hero .sub{
+    font-size:22px;color:rgba(247,244,236,0.85);margin-top:18px;max-width:54ch;
+  }
+  .hero .byline{
+    margin-top:36px;font-family:"Archivo",sans-serif;font-size:14px;
+    letter-spacing:0.08em;color:rgba(247,244,236,0.6);
+  }
+
+  /* ---------- Chart cards ---------- */
+  .chart-card{
+    background:#fff;
+    border:1px solid rgba(16,34,47,0.10);
+    border-radius:10px;
+    padding:26px 26px 18px;
+    margin:26px 0;
+    box-shadow:0 10px 30px rgba(11,31,51,0.06);
+  }
+  .chart-title{
+    font-family:"Archivo",sans-serif;font-weight:800;font-size:18px;
+    color:var(--navy);margin:0 0 4px;
+  }
+  .chart-note{font-size:14px;color:var(--muted);margin:0 0 14px;font-family:"Archivo",sans-serif;}
+
+  .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:24px;}
+  @media(max-width:820px){.grid-2{grid-template-columns:1fr;}}
+
+  .draft-banner{
+    background:var(--gold);color:var(--navy);font-family:"Archivo",sans-serif;
+    font-weight:800;text-align:center;padding:10px;letter-spacing:0.1em;font-size:13px;
+    text-transform:uppercase;
+  }
+
+  footer{background:var(--navy);color:rgba(247,244,236,0.8);padding:50px 0;font-size:14px;font-family:"Archivo",sans-serif;}
+  footer a{color:var(--gold-soft);}
+
+  .placeholder-img{
+    background:linear-gradient(135deg,var(--navy),var(--pitch));
+    border-radius:10px;height:240px;display:flex;align-items:center;justify-content:center;
+    color:rgba(255,255,255,0.5);font-family:"Archivo",sans-serif;font-size:13px;letter-spacing:0.1em;
+    text-transform:uppercase;
+  }
+</style>
+</head>
+<body>
+
+<div class="draft-banner">⚠ Draft for studio critique — placeholder data, not final</div>
+
+<!-- ===================== TITLE / HERO ===================== -->
+<header class="hero">
+  <div class="wrap">
+    <div class="kicker">A Visual History · 1930 – 2026</div>
+    <h1>The FIFA<br>World Cup</h1>
+    <p class="sub">From thirteen nations in Montevideo to forty-eight across three countries — the story of football's greatest tournament, told through data.</p>
+    <div class="byline">By [Your Name] · Monash University FIT2179 · 2026</div>
+  </div>
+</header>
+
+<!-- ===================== 2. INTRODUCTION ===================== -->
+<section>
+  <div class="wrap">
+    <div class="section-label">01 — Introduction</div>
+    <h2>The Legendary Tournament</h2>
+    <p class="lead">Every four years, the world stops to watch a single tournament.</p>
+    <p>The FIFA World Cup is the most-watched sporting event on Earth, contested not by clubs but by nations. Since the first tournament in Uruguay in 1930, it has grown from a small gathering of thirteen teams into a global spectacle that draws billions of viewers and brings entire countries to a standstill. This page traces that story — how the tournament grew, where it has been played, who made it legendary, and where it goes next.</p>
+    <p><em>(This section is text and images only — no charts. Placeholder image below.)</em></p>
+    <div class="placeholder-img">Image placeholder — trophy / iconic moment</div>
+  </div>
+</section>
+
+<!-- ===================== 3. HISTORY ===================== -->
+<section>
+  <div class="wrap">
+    <div class="section-label">02 — How it grew</div>
+    <h2>The History of the World Cup</h2>
+    <p>The World Cup of today is almost unrecognisable from the one that began in 1930. The number of teams has more than tripled, the format has been reinvented several times, and the way the game is played has changed the rhythm of goals. These charts trace the growth of the tournament itself — the stage on which every later story unfolds.</p>
+
+    <div class="grid-2">
+      <div class="chart-card">
+        <p class="chart-title">A tournament that kept growing</p>
+        <p class="chart-note">Teams per tournament, 1930–2026</p>
+        <div id="chart-teams"></div>
+      </div>
+      <div class="chart-card">
+        <p class="chart-title">Harder to score</p>
+        <p class="chart-note">Average goals per match by tournament</p>
+        <div id="chart-goals"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== 4. COUNTRIES (MAP) ===================== -->
+<section>
+  <div class="wrap">
+    <div class="section-label">03 — Geography</div>
+    <h2>Countries of the Tournament</h2>
+    <p>As the tournament grew, so did the map of the football world. Dozens of nations have qualified across the decades — yet only a handful have ever lifted the trophy. The map below shows how often each country has appeared; the chart beside it shows the exclusive club that has actually won.</p>
+
+    <div class="chart-card">
+      <p class="chart-title">A global game</p>
+      <p class="chart-note">World Cup appearances by country (placeholder values)</p>
+      <div id="chart-map"></div>
+    </div>
+
+    <div class="chart-card">
+      <p class="chart-title">The exclusive winners' club</p>
+      <p class="chart-note">World Cup titles won, by nation</p>
+      <div id="chart-winners"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== 5. ICONIC TEAMS & PLAYERS ===================== -->
+<section>
+  <div class="wrap">
+    <div class="section-label">04 — The legends</div>
+    <h2>Iconic Teams &amp; Players</h2>
+    <p>Behind those winning nations are the players and squads who turned tournaments into legend — regardless of the year. From record-breaking goalscorers to the teams remembered as the greatest ever assembled, these are the moments that defined the World Cup.</p>
+
+    <div class="chart-card">
+      <p class="chart-title">The all-time top scorers</p>
+      <p class="chart-note">Career World Cup goals (placeholder values)</p>
+      <div id="chart-scorers"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== 6. AUSTRALIA ===================== -->
+<section>
+  <div class="wrap">
+    <div class="section-label">05 — Closer to home</div>
+    <h2>Australia at the World Cup</h2>
+    <p>For every nation that produced legends, others have spent decades chasing their own World Cup story. Australia is one of them — from the Socceroos' first appearance in 1974 to the Matildas' record-breaking run as co-hosts in 2023.</p>
+
+    <div class="chart-card">
+      <p class="chart-title">The Socceroos' goal record</p>
+      <p class="chart-note">Goals scored by Australia per World Cup (placeholder values)</p>
+      <div id="chart-australia"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== 7. ROAD TO 2026 ===================== -->
+<section>
+  <div class="wrap">
+    <div class="section-label">06 — What's next</div>
+    <h2>The Road to 2026</h2>
+    <p>In 2026, the World Cup becomes bigger than ever — the first hosted by three nations, the first with forty-eight teams, and the first to guarantee every confederation a place at the finals. From thirteen nations in 1930 to forty-eight in 2026, the story is still being written.</p>
+
+    <div class="chart-card">
+      <p class="chart-title">A place for everyone</p>
+      <p class="chart-note">Confederation slots at the 2026 World Cup (approx.)</p>
+      <div id="chart-2026"></div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <p><strong>The FIFA World Cup, 1930–2026</strong> — draft visualisation for studio critique.</p>
+    <p>Data sources (to be finalised): Kaggle (piterfm, FIFA World Cup 1930–2022); GitHub (jfjelstul, worldcup database). Map: Vega world-110m TopoJSON. All chart values shown are placeholders for critique purposes.</p>
+    <p>Author: [Your Name] · FIT2179 Data Visualisation · Monash University · 2026</p>
+  </div>
+</footer>
+
+<script>
+/* ---------- Shared theme for all charts ---------- */
+const FONT = "Archivo, sans-serif";
+const config = {
+  background: null,
+  font: FONT,
+  axis: { labelFont: FONT, titleFont: FONT, titleColor:"#10222f", labelColor:"#5d6b75", grid:false, domainColor:"#cfd6db", tickColor:"#cfd6db" },
+  legend: { labelFont: FONT, titleFont: FONT },
+  title: { font: FONT, anchor:"start" },
+  view: { stroke: null }
+};
+const NAVY = "#0b1f33", GOLD = "#e8b13a", PITCH = "#2f8f5b";
+
+/* ---------- 3. History: teams per tournament ---------- */
+const teamsSpec = {
+  $schema:"https://vega.github.io/schema/vega-lite/v5.json",
+  width:"container", height:240, config,
+  data:{values:[
+    {year:1930,teams:13},{year:1934,teams:16},{year:1938,teams:15},{year:1950,teams:13},
+    {year:1954,teams:16},{year:1958,teams:16},{year:1962,teams:16},{year:1966,teams:16},
+    {year:1970,teams:16},{year:1974,teams:16},{year:1978,teams:16},{year:1982,teams:24},
+    {year:1986,teams:24},{year:1990,teams:24},{year:1994,teams:24},{year:1998,teams:32},
+    {year:2002,teams:32},{year:2006,teams:32},{year:2010,teams:32},{year:2014,teams:32},
+    {year:2018,teams:32},{year:2022,teams:32},{year:2026,teams:48}
+  ]},
+  mark:{type:"area", line:{color:NAVY, strokeWidth:2}, color:{x1:1,y1:1,x2:1,y2:0,gradient:"linear",stops:[{offset:0,color:"#ffffff"},{offset:1,color:"#9bbbd6"}]}, point:{filled:true,color:NAVY}},
+  encoding:{
+    x:{field:"year", type:"quantitative", axis:{format:"d", title:null}, scale:{domain:[1928,2028]}},
+    y:{field:"teams", type:"quantitative", title:"Teams"},
+    tooltip:[{field:"year",title:"Year"},{field:"teams",title:"Teams"}]
+  }
+};
+
+/* ---------- 3. History: goals per match ---------- */
+const goalsSpec = {
+  $schema:"https://vega.github.io/schema/vega-lite/v5.json",
+  width:"container", height:240, config,
+  data:{values:[
+    {year:1930,gpm:3.89},{year:1934,gpm:4.12},{year:1938,gpm:4.67},{year:1950,gpm:4.00},
+    {year:1954,gpm:5.38},{year:1958,gpm:3.60},{year:1962,gpm:2.78},{year:1966,gpm:2.78},
+    {year:1970,gpm:2.97},{year:1974,gpm:2.55},{year:1978,gpm:2.68},{year:1982,gpm:2.81},
+    {year:1986,gpm:2.54},{year:1990,gpm:2.21},{year:1994,gpm:2.71},{year:1998,gpm:2.67},
+    {year:2002,gpm:2.52},{year:2006,gpm:2.30},{year:2010,gpm:2.27},{year:2014,gpm:2.67},
+    {year:2018,gpm:2.64},{year:2022,gpm:2.69}
+  ]},
+  mark:{type:"line", color:PITCH, strokeWidth:2.5, point:{filled:true,color:PITCH}},
+  encoding:{
+    x:{field:"year", type:"quantitative", axis:{format:"d", title:null}},
+    y:{field:"gpm", type:"quantitative", title:"Goals / match", scale:{domain:[0,6]}},
+    tooltip:[{field:"year",title:"Year"},{field:"gpm",title:"Goals per match"}]
+  }
+};
+
+/* ---------- 4. Countries: world map choropleth ---------- */
+const mapSpec = {
+  $schema:"https://vega.github.io/schema/vega-lite/v5.json",
+  width:"container", height:420, config,
+  projection:{type:"naturalEarth1"},
+  data:{
+    url:"https://cdn.jsdelivr.net/npm/vega-datasets@2/data/world-110m.json",
+    format:{type:"topojson", feature:"countries"}
+  },
+  transform:[{
+    lookup:"id",
+    from:{
+      data:{values:[
+        {id:76,country:"Brazil",app:22},{id:276,country:"Germany",app:20},
+        {id:380,country:"Italy",app:18},{id:32,country:"Argentina",app:18},
+        {id:484,country:"Mexico",app:17},{id:826,country:"England",app:16},
+        {id:250,country:"France",app:16},{id:724,country:"Spain",app:16},
+        {id:858,country:"Uruguay",app:14},{id:840,country:"United States",app:11},
+        {id:528,country:"Netherlands",app:11},{id:36,country:"Australia",app:6}
+      ]},
+      key:"id", fields:["app","country"]
+    }
+  }],
+  mark:{type:"geoshape", stroke:"#ffffff", strokeWidth:0.4},
+  encoding:{
+    color:{field:"app", type:"quantitative", scale:{scheme:"yellowgreenblue"},
+           legend:{title:"Appearances", orient:"bottom-left"}},
+    tooltip:[{field:"country",title:"Country"},{field:"app",title:"Appearances"}]
+  }
+};
+
+/* ---------- 4. Countries: winners ---------- */
+const winnersSpec = {
+  $schema:"https://vega.github.io/schema/vega-lite/v5.json",
+  width:"container", height:300, config,
+  data:{values:[
+    {country:"Brazil",titles:5},{country:"Germany",titles:4},{country:"Italy",titles:4},
+    {country:"Argentina",titles:3},{country:"France",titles:2},{country:"Uruguay",titles:2},
+    {country:"England",titles:1},{country:"Spain",titles:1}
+  ]},
+  mark:{type:"bar", color:GOLD, cornerRadiusEnd:3},
+  encoding:{
+    y:{field:"country", type:"nominal", sort:"-x", title:null},
+    x:{field:"titles", type:"quantitative", title:"Titles won", axis:{tickMinStep:1}},
+    tooltip:[{field:"country"},{field:"titles",title:"Titles"}]
+  }
+};
+
+/* ---------- 5. Iconic: top scorers ---------- */
+const scorersSpec = {
+  $schema:"https://vega.github.io/schema/vega-lite/v5.json",
+  width:"container", height:320, config,
+  data:{values:[
+    {player:"Miroslav Klose",goals:16},{player:"Ronaldo (BRA)",goals:15},
+    {player:"Gerd Müller",goals:14},{player:"Just Fontaine",goals:13},
+    {player:"Pelé",goals:12},{player:"Sándor Kocsis",goals:11},
+    {player:"Jürgen Klinsmann",goals:11},{player:"Helmut Rahn",goals:10}
+  ]},
+  mark:{type:"bar", color:NAVY, cornerRadiusEnd:3},
+  encoding:{
+    y:{field:"player", type:"nominal", sort:"-x", title:null},
+    x:{field:"goals", type:"quantitative", title:"Career World Cup goals"},
+    tooltip:[{field:"player"},{field:"goals",title:"Goals"}]
+  }
+};
+
+/* ---------- 6. Australia ---------- */
+const ausSpec = {
+  $schema:"https://vega.github.io/schema/vega-lite/v5.json",
+  width:"container", height:280, config,
+  data:{values:[
+    {year:"1974",goals:0},{year:"2006",goals:5},{year:"2010",goals:3},
+    {year:"2014",goals:3},{year:"2018",goals:2},{year:"2022",goals:4}
+  ]},
+  mark:{type:"bar", color:PITCH, cornerRadiusEnd:3},
+  encoding:{
+    x:{field:"year", type:"nominal", title:"Tournament"},
+    y:{field:"goals", type:"quantitative", title:"Goals scored"},
+    tooltip:[{field:"year",title:"Year"},{field:"goals",title:"Goals"}]
+  }
+};
+
+/* ---------- 7. Road to 2026 ---------- */
+const slots2026Spec = {
+  $schema:"https://vega.github.io/schema/vega-lite/v5.json",
+  width:"container", height:300, config,
+  data:{values:[
+    {conf:"UEFA (Europe)",slots:16},{conf:"CAF (Africa)",slots:9},
+    {conf:"AFC (Asia)",slots:8},{conf:"CONCACAF",slots:6},
+    {conf:"CONMEBOL (S. America)",slots:6},{conf:"OFC (Oceania)",slots:1},
+    {conf:"Play-off",slots:2}
+  ]},
+  mark:{type:"bar", color:GOLD, cornerRadiusEnd:3},
+  encoding:{
+    y:{field:"conf", type:"nominal", sort:"-x", title:null},
+    x:{field:"slots", type:"quantitative", title:"Slots", axis:{tickMinStep:1}},
+    tooltip:[{field:"conf",title:"Confederation"},{field:"slots",title:"Slots"}]
+  }
+};
+
+/* ---------- Render all ---------- */
+const opts = {actions:false, renderer:"svg"};
+vegaEmbed("#chart-teams", teamsSpec, opts);
+vegaEmbed("#chart-goals", goalsSpec, opts);
+vegaEmbed("#chart-map", mapSpec, opts);
+vegaEmbed("#chart-winners", winnersSpec, opts);
+vegaEmbed("#chart-scorers", scorersSpec, opts);
+vegaEmbed("#chart-australia", ausSpec, opts);
+vegaEmbed("#chart-2026", slots2026Spec, opts);
+</script>
+
+</body>
+</html>
